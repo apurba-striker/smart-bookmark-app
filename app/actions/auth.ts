@@ -1,13 +1,13 @@
 'use server'
 
-import { headers } from 'next/headers'
-import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
+import { redirect } from 'next/navigation'
+import { headers } from 'next/headers'
 
 export async function signInWithGoogle() {
     const supabase = await createClient()
-    const requestHeaders = await headers()
-    const origin = requestHeaders.get('origin') || 'http://localhost:3000'
+    const headersList = await headers()
+    const origin = headersList.get('origin') || 'http://localhost:3000'
 
     const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
@@ -16,14 +16,8 @@ export async function signInWithGoogle() {
         },
     })
 
-    if (error) {
-        console.error('Auth error:', error)
-        return
-    }
-
-    if (data.url) {
-        redirect(data.url)
-    }
+    if (error) throw error
+    if (data.url) redirect(data.url)
 }
 
 export async function signOut() {
