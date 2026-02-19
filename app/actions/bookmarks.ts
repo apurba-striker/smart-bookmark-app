@@ -17,7 +17,6 @@ export async function addBookmark(formData: FormData) {
         .insert({ user_id: user.id, url, title })
 
     if (error) throw error
-    // Remove revalidatePath('/') - Realtime will handle it!
 }
 
 export async function deleteBookmark(id: string) {
@@ -28,5 +27,4 @@ export async function deleteBookmark(id: string) {
         .eq('id', id)
 
     if (error) throw error
-    // Remove revalidatePath('/') - Realtime will handle it!
 }
